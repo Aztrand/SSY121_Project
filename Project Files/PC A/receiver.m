@@ -15,7 +15,8 @@ audioArray = recordAudio(time);
 %
 
 %PB to BB
-
+n = (0:length(audioArray)-1)';
+pulse_train = audioArray.*exp(-1i*2*pi*fc/fsamp*n);
 %
 
 %Constellation

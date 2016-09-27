@@ -5,7 +5,7 @@ function [ s ] = demapping( values )
 %Constellation
 const=([0 2 10 8;  1 3 11 9  ...
 ;5 7 15 13;  4 6 14 12]);
-values=([-3 -3; -1 -1; 1 1; 3 3]);
+%values=([-3 -3; -1 -1; 1 1; 3 3]);
 %Q=1; I=3;
 s=[];
 for i=1:length(values)
