@@ -14,9 +14,7 @@ fsfd = fsamp/fsymb;                    % Number of samples per symbol (choose fs
 audioArray = recordAudio(time);
 %
 
-%PB to BB
 
-%
 
 %Constellation
 bitPackage = demapping(complex constants)

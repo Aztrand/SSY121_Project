@@ -1,5 +1,5 @@
 clear all;
-clc; clf;
+%clc;
 
 %
 
@@ -16,10 +16,11 @@ for i=1:length(iq)
         Inorm = (iq(i,2)+3)/2+1;
         mess=IQ(Qnorm,Inorm);
         messB(i,:)=de2bi(mess,4);
-        s = [s,messB(i,:)]
+        s = [s,messB(i,:)];
 end
 
-messB;
+s
+
 %mess=IQ(Qnorm,Inorm)
 %messB=de2bi(mess)
 %mess=bi2de(messB)
