@@ -1,29 +1,19 @@
 
-function [QIMatrix] = closest (I, Q)
-ref = [-3, -1, 1, 3];
+function [QIMatrix] = closest (IQ)
+ref = [(-3 + 3i) (-3 +1i) (-3 -3i) (-3 -1i) (-1 + 3i) (-1 +1i) (-1 -3i) (-1 -1i) (+3 + 3i) (+3 +1i) (+3 -3i) (+3 -1i) (+1 + 3i) (+1 +1i) (+1 -3i) (+1 -1i)];
 
-Iclosest = zeros(0,length(I));
-for j = 1:1:length(I)
+closest = zeros(0,length(IQ));
+for j = 1:1:length(IQ)
     dist_old = 3.0;
-    for i = 1:1:4
-        dist = abs(I(j)-ref(i));
+    for i = 1:1:length(ref)
+        dist = abs(IQ(j)-ref(i));
         if (dist < dist_old)
             dist_old = dist;
-            Iclosest(j) = ref(i);
+            closest(j) = ref(i);
         end
     end
 end
 
-Qclosest = zeros(0,length(Q));
-for j = 1:1:length(Q)
-    dist_old = 3.0;
-    for i = 1:1:4
-        dist = abs(Q(j)-ref(i));
-        if (dist < dist_old)
-            dist_old = dist;
-            Qclosest(j) = ref(i);
-        end
-    end
-end
 
-QIMatrix = [Qclosest.', Iclosest.'];
+
+QIMatrix = closest
