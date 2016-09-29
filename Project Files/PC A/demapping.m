@@ -9,8 +9,8 @@ const=([0 2 10 8;  1 3 11 9  ...
 %Q=1; I=3;
 s=[];
 for i=1:length(values)
-        Qnorm = (values(i,1)+3)/2+1;
-        Inorm = (values(i,2)+3)/2+1;
+        Qnorm = (real(values(i))+3)/2+1;
+        Inorm = (imag(values(i))+3)/2+1;
         mess=const(Qnorm,Inorm);
         messB(i,:)=de2bi(mess,4);
         s = [s,messB(i,:)];
