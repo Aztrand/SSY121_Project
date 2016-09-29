@@ -12,7 +12,7 @@ fsfd = fsamp/fsymb;                  % Number of samples per symbol (choose fs s
 
 
 %Record Audio
-audioArray = recordAudio(3);
+audioArray = recordAudio(tout);
 %
 
 %PB to BB
@@ -40,14 +40,14 @@ mf_signal = mf(pulse, lpf_signal, fsfd);
 %remove zeros
 mf_signal_rz = mf_signal(2*span*fsfd:end-2*span*fsfd);
 %sample to get symbols
-x_hat = mf_signal_rz(1:fsfd:end);
+const = mf_signal_rz(1:fsfd:end);
 
 %ML decoding
-complexValues = closest(x_hat);
+complexValues = closest(const);
 bit_vector = demapping(complexValues)';
 
 figure(23)
-scatterplot(x_hat); grid on;
+scatterplot(const); grid on;
 [numErrors, ber] = biterr(data_bin, bit_vector)
 
 %disp('Complete the receiver') 
