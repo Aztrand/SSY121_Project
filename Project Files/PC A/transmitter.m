@@ -40,7 +40,7 @@ ylabel('Power in dB');
 % Each symbol replaced by the pulse shape and added
 pulse_train = conv(pulse,xu);  
 
-n = (0:length(pulse_train)-1);
+n = (0:length(pulse_train)-1)';
 realpulse = real(pulse_train).*sqrt(2).*cos(2*pi*fc*Tsamp.*n);
 imagpulse = imag(pulse_train).*sqrt(2).*sin(2*pi*fc*Tsamp.*n);
 pulse_train_passband = realpulse+1i.*imagpulse;
