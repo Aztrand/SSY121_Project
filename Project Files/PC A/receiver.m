@@ -35,9 +35,20 @@ a=0.3;                                  % Roll off factor
 mf_signal = mf(pulse, lpf_signal, fsfd);
 %
 
+%Downsampling
 
-%Constellation
+%remove zeros
+mf_signal_rz = mf_signal(2*span*fsfd:end-2*span*fsfd);
+%sample to get symbols
+x_hat = mf_signal_rz(1:fsfd:end);
 
+%ML decoding
+complexValues = closest(x_hat);
+bit_vector = demapping(complexValues)';
+
+figure(23)
+scatterplot(x_hat); grid on;
+[numErrors, ber] = biterr(data_bin, bit_vector)
 
 %disp('Complete the receiver') 
 %pack = []; psd = [];  const=[]; eyed = [];
