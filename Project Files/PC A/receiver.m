@@ -15,10 +15,16 @@ audioArray = recordAudio(3);
 %
 
 %PB to BB
-n = (0:length(audioArray)-1)';
-pulse_train = audioArray%.*exp(-1i*2*pi*fc/fsamp*n);
-complexValues = closest(pulse_train);
-bitPackage = demapping(complexValues)
+pulse_train = pbTObb()
+%n = (0:length(audioArray)-1)';
+%pulse_train = audioArray%.*exp(-1i*2*pi*fc/fsamp*n);
+%complexValues = closest(pulse_train);
+%bitPackage = demapping(complexValues)
+%
+
+%Low-pass filter
+
+%
 
 %Constellation
 
