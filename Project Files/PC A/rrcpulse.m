@@ -1,11 +1,11 @@
-function [y,t] = rrcpulse(beta,Ts,fs)
+function [y,t] = rrcpulse(beta,Ts,fs,span)
 
 % beta is roll-off factor
 % Ts is symbol time
 % fs is sampling frequency
 % trunc_span is how much we should truncate the pulse
 
-t_positive = eps:(1/fs):span*tau;  % Replace 0 with eps (smallest +ve number MATLAB can produce) to prevent NANs
+t_positive = eps:(1/fs):span*Ts;  % Replace 0 with eps (smallest +ve number MATLAB can produce) to prevent NANs
 t = [-fliplr(t_positive(2:end)) t_positive]; %Insert offset to prevent NANs
 
 % Just some factors for the pulse equation
