@@ -12,7 +12,8 @@ fsfd = fsamp/fsymb;                  % Number of samples per symbol (choose fs s
 
 
 %Record Audio
-audioArray = recordAudio(tout);
+%audioArray = recordAudio(tout);
+audioArray=y;
 %
 
 %PB to BB
@@ -50,7 +51,15 @@ figure(23)
 scatterplot(const); grid on;
 [numErrors, ber] = biterr(data_bin, bit_vector)
 
+%PSD
+F = fft(mf_signal_rz)
+F=F(1:length(mf_signal_rz)/2+1);
+psd=(1/(2*pi*length(mf_signal_rz)))*abs(F).^2;
+psd(2:end-1) = 2*psd(2:end-1);
+freqI=0:fsamp/length(mf_signal_rz):fsamp/2;
+plot(freqI,10*log10(psd))
 %disp('Complete the receiver') 
 %pack = []; psd = [];  const=[]; eyed = [];
+
 
 end
