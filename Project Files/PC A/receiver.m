@@ -9,11 +9,11 @@ Tsamp=1/fsamp;
 m=log2(M);                            % Number of bits per symbol
 fsymb =rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                  % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
-
+signalTime = Tsamp*47998; %tout
 
 %Record Audio
-%audioArray = recordAudio(tout);
-audioArray=y;
+%audioArray = recordAudio(tout, fsamp);
+audioArray=y; %from test
 %
 
 %PB to BB

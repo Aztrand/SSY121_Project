@@ -9,11 +9,11 @@ Tsamp=1/fsamp;
 m=log2(M);                            % Number of bits per symbol
 fsymb =rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                  % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
-
+signalTime = Tsamp*432/4
 
 %Record Audio
-%audioArray = recordAudio(tout);
-audioArray=y;
+%audioArray = recordAudio(tout, fsamp);
+audioArray=y; %from test
 %
 
 %PB to BB
@@ -56,8 +56,8 @@ F = fft(mf_signal_rz)
 F=F(1:length(mf_signal_rz)/2+1);
 psd=(1/(2*pi*length(mf_signal_rz)))*abs(F).^2;
 psd(2:end-1) = 2*psd(2:end-1);
-freq=0:fsamp/length(mf_signal_rz):f;
-plot(freq/pi,10*log10(psd))
+freqI=0:fsamp/length(mf_signal_rz):fsamp/2;
+plot(freqI,10*log10(psd))
 %disp('Complete the receiver') 
 %pack = []; psd = [];  const=[]; eyed = [];
 
