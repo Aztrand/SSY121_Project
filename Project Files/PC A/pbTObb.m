@@ -1,7 +1,7 @@
-function [ y1 ] = pbTObb( y )
+function [ y1 ] = pbTObb( y,fc,Tsamp )
 %PBTOBB Summary of this function goes here
 %   y is the received signal
-n = (0:length(pulse_train_passband)-1);
+n = (0:length(y)-1);
 y_real = real(y).*sqrt(2).*cos(2*pi*fc*Tsamp.*n);
 y_image = imag(y).*sqrt(2).*sin(2*pi*fc*Tsamp.*n);
 y1 = y_real+1i.*y_image;
