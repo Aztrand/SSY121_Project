@@ -3,17 +3,19 @@ function transmitter(packet,fc)
 x=packet;
 N=length(x);                            %length of data
 %%%%%%%%%choose parameters%%%%%%%%%%%%%%
-rb=440;                                % bit rate [bit/sec]
-fsamp=44e3;                            %sample rate
-fc=2500;
-Tsamp=1/fsamp;                           % Number of bits per symbol
-M=16;
+rb = 440;                                % bit rate [bit/sec]
+fsamp = 44e3;                            %sample rate
+fc= 2500;
+Tsamp = 1/fsamp;                           % Number of bits per symbol
+M = 16;
 m = log2(M);                        % Number of bits per symbol
-fsymb =rb/m;                          % Symbol rate [symb/s]
+fsymb = rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                    % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
-
+%%%%%% frame synchronazation
+s_dect=[1,1,0,1,1,1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1,0,1,0,1];  %%%the signal used to detection.
+x=[s_dect zeros(1,4) x'];
 %%%QAM
-[x_qam,s]=QAM16(x,M);
+[x_qam,s] = QAM16(x,M);
 figure(1),
 scatterplot(s); grid on;                            % Constellation visualization
 figure(2),
@@ -23,8 +25,9 @@ xu = zeros(length(x_qam)*fsfd,1);
 xu(1:fsfd:end) = x_qam ;     % Space the symbols fsfd apart, to enable pulse shaping using conv.
 
 span = 6;                               %how many symbol times to we want of pulse 
-a=0.1;                                  % Roll off factor
-[pulse, t] =rtrcpuls(a,1/fsymb,fsamp,span);%RRC
+a = 0.2;                                  % Roll off factor
+
+[pulse, t] = rrcpulse(a,1/fsymb,fsamp,span); %RRC
 %%plot rrc pulse in time and frequency domain
 N1 = max(1024,length(pulse)); 
 rrc_f = abs(fftshift(fft(pulse,N1)));
@@ -79,7 +82,8 @@ fvec = (fsamp/N)*(-floor(N/2):1:ceil(N/2)-1); % For both even and odd N
 %fvec = 0:1:ceil(N-1); % For both even and odd N
 
 figure(7); 
-plot(fvec,20*log10(abs(P1)));
+plot(fvec,20*log10(abs(P1/max(P1))));
 xlabel('Frequency in Hz');
 ylabel('Power in dB');
+
 soundsc(real(pulse_train_passband),fsamp);
