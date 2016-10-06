@@ -10,16 +10,15 @@ m=log2(M);                            % Number of bits per symbol
 fsymb =rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                  % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
 signalTime = Tsamp*47998; %tout
-
+count = 0;
 %Record Audio
 tic;
 while toc < tout
-    audioArray = recordAudio(0.2, fsamp);
-end
+audioArray = recordAudio(0.2, fsamp);
 %
-
+audioAcc = cat(2,audioAcc,audioArray);
 %PB to BB
-bb_signal = pbTObb(audioArray, fc, Tsamp);
+bb_signal = pbTObb(audioAcc, fc, Tsamp);
 
 %n = (0:length(audioArray)-1)';
 %pulse_train = audioArray%.*exp(-1i*2*pi*fc/fsamp*n);
@@ -43,20 +42,26 @@ xu = zeros(length(pre_ref)*fsfd,1);
 xu(1:fsfd:end) = pre_ref; 
 Pre_ref_sig = conv(pulse,xu); 
 
-C = crossCorr(pre_ref_sig, mf_signal);
+[V,C] = crossCorr(pre_ref_sig, mf_signal);
+if (V > 5)
+    Count = Count++;
+end
+if ( Count >= 5)
+    mf_signal = mf_signal[C: C+7854];
+    %Downsampling
 
-mf_signal = mf_signal[C: C+7854];
-%Downsampling
+    %remove zeros
+    mf_signal_rz = mf_signal(2*span*fsfd:end-2*span*fsfd);
+    %sample to get symbols
+    const = mf_signal_rz(1:fsfd:end);
 
-%remove zeros
-mf_signal_rz = mf_signal(2*span*fsfd:end-2*span*fsfd);
-%sample to get symbols
-const = mf_signal_rz(1:fsfd:end);
-
-%ML decoding
-complexValues = closest(const);
-bit_vector = demapping(complexValues)';
-
+    %ML decoding
+    complexValues = closest(const);
+    bit_vector = demapping(complexValues)';
+    count = 0;
+    audioAcc = zeroes(length(audioAcc,1)
+end;
+end;
 figure(23)
 scatterplot(const); grid on;
 [numErrors, ber] = biterr(data_bin, bit_vector)
