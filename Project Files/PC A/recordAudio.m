@@ -3,7 +3,7 @@ function [ audioArray ] = recordAudio( time, fsamp )
 %   Detailed explanation goes here
 recObj = audiorecorder(fsamp);
 disp('Start')
-recordblocking(recObj, time+2); %adding extra time, which we later filter away.
+recordblocking(recObj, time); %adding extra time, which we later filter away.
 disp('end')
 audioArray = getaudiodata(recObj);
 end

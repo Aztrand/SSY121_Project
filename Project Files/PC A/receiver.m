@@ -11,9 +11,11 @@ fsymb =rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                  % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
 signalTime = Tsamp*47998; %tout
 
+%WHILE LOOP STARTS HERE
+
 %Record Audio
-%audioArray = recordAudio(tout, fsamp);
-audioArray=y; %from test
+audioArray = recordAudio(tout, fsamp);
+%audioArray=y; %from test
 %
 
 %PB to BB
@@ -42,6 +44,10 @@ mf_signal = mf(pulse, lpf_signal, fsfd);
 mf_signal_rz = mf_signal(2*span*fsfd:end-2*span*fsfd);
 %sample to get symbols
 const = mf_signal_rz(1:fsfd:end);
+
+%Frame synch
+
+%
 
 %ML decoding
 complexValues = closest(const);
