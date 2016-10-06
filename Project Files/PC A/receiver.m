@@ -4,7 +4,7 @@ function [pack, psd, const, eyed] = receiver(tout,fc)
 %Constants
 M=16;                                  %Number of symbols in the constellation
 rb=440;                                % bit rate [bit/sec]
-fsamp=44e3;                            %sample rate
+fsamp=8e3;                            %sample rate
 Tsamp=1/fsamp;
 m=log2(M);                            % Number of bits per symbol
 fsymb =rb/m;                          % Symbol rate [symb/s]
@@ -12,8 +12,10 @@ fsfd = fsamp/fsymb;                  % Number of samples per symbol (choose fs s
 signalTime = Tsamp*47998; %tout
 
 %Record Audio
-%audioArray = recordAudio(tout, fsamp);
-audioArray=y; %from test
+tic;
+while toc < tout
+    audioArray = recordAudio(0.2, fsamp);
+end
 %
 
 %PB to BB
@@ -29,13 +31,21 @@ bb_signal = pbTObb(audioArray, fc, Tsamp);
 lpf_signal = lpf(bb_signal);
 %
 
-%Macthed Filter
+%Matched Filter
 span = 6;                               %how many symbol times to we want of pulse 
 a=0.3;                                  % Roll off factor
 [pulse, t] =rtrcpuls(a,1/fsymb,fsamp,span);
 mf_signal = mf(pulse, lpf_signal, fsfd);
 %
+%Create reference preamble
+Pre_ref = [1+1i, 1+1i, 1+1i, -1+1i, -1+1i, 1+1i, -1+1i];
+xu = zeros(length(pre_ref)*fsfd,1);
+xu(1:fsfd:end) = pre_ref; 
+Pre_ref_sig = conv(pulse,xu); 
 
+C = crossCorr(pre_ref_sig, mf_signal);
+
+mf_signal = mf_signal[C: C+7854];
 %Downsampling
 
 %remove zeros
