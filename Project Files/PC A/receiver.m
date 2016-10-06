@@ -43,11 +43,11 @@ xu(1:fsfd:end) = pre_ref;
 Pre_ref_sig = conv(pulse,xu); 
 
 [V,C] = crossCorr(pre_ref_sig, mf_signal);
-if (V > 5)
-    Count = Count++;
+if (V > 5)  %If the receved signal reaches a certain value of detection
+    Count = Count++;    %we wait and record. (Recorder still active)
 end
 if ( Count >= 5)
-    mf_signal = mf_signal[C: C+7854];
+    mf_signal = mf_signal[C: C+7854];   %fetching the whole message.
     %Downsampling
 
     %remove zeros
