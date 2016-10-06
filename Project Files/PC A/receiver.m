@@ -28,7 +28,7 @@ bb_signal = pbTObb(audioArray, fc, Tsamp);
 %
 
 %Low-pass filter
-lpf_signal = lpf(bb_signal);
+lpf_signal = lowpassfilter(200,0.2,20,bb_signal);
 %
 
 %Matched Filter
