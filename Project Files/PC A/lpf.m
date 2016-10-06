@@ -1,4 +1,4 @@
-function [ output_args ] = lpf( input_args )
+function [ filtered_signal ] = lpf( y1 )
 %LPF Summary of this function goes here
 %   Detailed explanation goes here
 fs = 1000;
@@ -12,7 +12,7 @@ Ar = 5;
 [H,w] = freqz(b,a,512);
 figure(),plot(w*fs/(2*pi),abs(H));
 %使用FFT得到滤波后信号的频谱
-y2 = filter(b,a,y1);
+filtered_signal = filter(b,a,y1);
 
 end
 

@@ -169,10 +169,5 @@ mf_output_rz = mf_output(2*span*fsfd:end-2*span*fsfd);
 x_hat = mf_output_rz(1:fsfd:end);
 
 %ML decoding
-complexValues = closest(x_hat);
-bit_vector = demapping(complexValues)';
-
-figure(23)
-scatterplot(x_hat); grid on;
-[numErrors, ber] = biterr(data_bin, bit_vector)
+complexValues = 
 

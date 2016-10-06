@@ -12,4 +12,4 @@ fsfd = fsamp/fsymb;                                 % Number of samples per symb
 
 x_buffer = buffer(x, m)';                           % Group bits into bits per symbol
 sym_idx = bi2de(x_buffer, 'left-msb')'+1;           % Bits to symbol index
-x_qam = s(sym_idx);                                     % Look up symbols using the indices
+x_qam = s(sym_idx);                                       % Look up symbols using the indices
