@@ -7,7 +7,7 @@ function [V,C] = crossCorr(x, y)
 %             c(j)=c(j)+x(j)*y(j+m);  
 %         end;    
 %     end;
-    c=conv(x,y);
+    c=conv(real(x),real(y));
     [V,C] = max(c);
 end
 

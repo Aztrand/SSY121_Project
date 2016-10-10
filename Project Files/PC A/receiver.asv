@@ -1,5 +1,7 @@
 function [pack, psd, const, eyed] = receiver(tout,fc)
 % Complete the function and remove the following lines
+tout = 6;
+fc = 2500;
 %Constants
 M=16;                                  %Number of symbols in the constellation
 rb=440;                                % bit rate [bit/sec]
@@ -10,23 +12,13 @@ fsymb =rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                  % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
 signalTime = Tsamp*47998; %tout
 count = 0;
-counter = 0;
 audioAcc = [];
-
-%Create reference preamble
-pre_ref = [1+1i, 1+1i, 1+1i, -1+1i, -1+1i, 1+1i, -1+1i];
-xu = zeros(length(pre_ref)*floor(fsfd),1);
-xu(1:fsfd:end) = pre_ref; 
-
 %Record Audio
 tic;
 while toc < tout
-%counter = counter + 1
-%if (counter == 10)
- %   audioArray = xu;
-%else
+
 audioArray = recordAudio(0.2, fsamp);
-%end
+%
 
 audioAcc = cat(1,audioAcc,audioArray);
 %audioAcc = [audioAcc';audioArray'];
@@ -49,21 +41,17 @@ a=0.3;                                  % Roll off factor
 [pulse, t] =rtrcpuls(a,1/fsymb,fsamp,span);
 mf_signal = mf(pulse, lpf_signal, fsfd);
 %
-
-%pre_ref_sig = conv(pulse,xu); 
-%remove zeros
-mf_signal_rz = mf_signal(2*span*fsfd:end-2*span*fsfd);
-%sample to get symbols
-const = mf_signal_rz(1:fsfd:end);
-
-[V,C] = crossCorr(pre_ref, const);
-V
+%Create reference preamble
+pre_ref = [1+1i, 1+1i, 1+1i, -1+1i, -1+1i, 1+1i, -1+1i];
+xu = zeros(length(pre_ref)*floor(fsfd),1);
+xu(1:fsfd:end) = pre_ref; 
+pre_ref_sig = conv(pulse,xu); 
+plot(p
+[V,C] = crossCorr(pre_ref_sig, mf_signal)
 if (V > 5)  %If the receved signal reaches a certain value of detection
     count = count+1;    %we wait and record. (Recorder still active)
 end
-if ( count > 6)
-    size(mf_signal)
-    mf_signal = mf_signal';
+if ( count >= 5)
     mf_signal = mf_signal(C: C+7854);   %fetching the whole message.
     %Downsampling
 
@@ -76,7 +64,7 @@ if ( count > 6)
     complexValues = closest(const);
     bit_vector = demapping(complexValues)';
     count = 0;
-    audioAcc = [];
+    audioAcc = zeroes(length(audioAcc),1);
 end;
 end;
 figure(23)
