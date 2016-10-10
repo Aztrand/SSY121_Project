@@ -96,4 +96,4 @@ plot(fvec,20*log10(abs(P1/max(P1))));
 xlabel('Frequency in Hz');
 ylabel('Power in dB');
 
-soundsc(pulse_train_passband,fsamp);
+soundsc(real(pulse_train_passband),fsamp);
