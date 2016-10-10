@@ -8,9 +8,9 @@ function filt_sig = lowpassfilter(size,cutoff,ord,signal)
 
 
 
-  y =  ([1:size] - (fix(size/2)+1))/size;
+  y =([1:size]-(fix(size/2)+1))/size;
 
- f = 1 ./ (1.0 + (y ./ cutoff).^(2*ord)); 
+ f =1./(1.0+(y./cutoff).^(2*ord)); 
 
  filt_sig = conv(signal,f);
  

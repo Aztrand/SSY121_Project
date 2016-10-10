@@ -1,6 +1,7 @@
 function [pack, psd, const, eyed] = receiver(tout,fc)
 % Complete the function and remove the following lines
-
+tout = 6;
+fc = 2500;
 %Constants
 M=16;                                  %Number of symbols in the constellation
 rb=440;                                % bit rate [bit/sec]
@@ -11,11 +12,14 @@ fsymb =rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                  % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
 signalTime = Tsamp*47998; %tout
 count = 0;
+audioAcc = [];
 %Record Audio
 tic;
 while toc < tout
+
 audioArray = recordAudio(0.2, fsamp);
 %
+
 audioAcc = cat(2,audioAcc,audioArray);
 %PB to BB
 bb_signal = pbTObb(audioAcc, fc, Tsamp);
@@ -37,17 +41,17 @@ a=0.3;                                  % Roll off factor
 mf_signal = mf(pulse, lpf_signal, fsfd);
 %
 %Create reference preamble
-Pre_ref = [1+1i, 1+1i, 1+1i, -1+1i, -1+1i, 1+1i, -1+1i];
-xu = zeros(length(pre_ref)*fsfd,1);
+pre_ref = [1+1i, 1+1i, 1+1i, -1+1i, -1+1i, 1+1i, -1+1i];
+xu = zeros(length(pre_ref)*floor(fsfd),1);
 xu(1:fsfd:end) = pre_ref; 
-Pre_ref_sig = conv(pulse,xu); 
+pre_ref_sig = conv(pulse,xu); 
 
 [V,C] = crossCorr(pre_ref_sig, mf_signal);
 if (V > 5)  %If the receved signal reaches a certain value of detection
-    Count = Count++;    %we wait and record. (Recorder still active)
+    count = count+1;    %we wait and record. (Recorder still active)
 end
-if ( Count >= 5)
-    mf_signal = mf_signal[C: C+7854];   %fetching the whole message.
+if ( count >= 5)
+    mf_signal = mf_signal(C: C+7854);   %fetching the whole message.
     %Downsampling
 
     %remove zeros
@@ -59,7 +63,7 @@ if ( Count >= 5)
     complexValues = closest(const);
     bit_vector = demapping(complexValues)';
     count = 0;
-    audioAcc = zeroes(length(audioAcc,1)
+    audioAcc = zeroes(length(audioAcc),1);
 end;
 end;
 figure(23)
