@@ -25,10 +25,11 @@ end
 x=s;
 %%%QAM
 [x_qam,s] = QAM16(x,M);
-figure(1),
-scatterplot(s); grid on;                            % Constellation visualization
-figure(2),
-scatterplot(x_qam); grid on;
+% figure(1),
+% scatterplot(s); grid on;                            % Constellation visualization
+% figure(2),
+% scatterplot(x_qam); grid on;
+
 
 xu = zeros(length(x_qam)*fsfd,1);
 xu(1:fsfd:end) = x_qam ;     % Space the symbols fsfd apart, to enable pulse shaping using conv.
@@ -41,13 +42,13 @@ a = 0.2;                                  % Roll off factor
 N1 = max(1024,length(pulse)); 
 rrc_f = abs(fftshift(fft(pulse,N1)));
 fvec1 = (fsamp/N1)*(-floor(N1/2):1:ceil(N1/2)-1); % For both even and odd N
-figure(3),
-subplot(211),
-plot(pulse);title('RRC in time domain');
-subplot(212),
-plot(fvec1,20*log10(rrc_f));title('RRC in frequency domain');
-xlabel('Frequency in Hz');
-ylabel('Power in dB');
+% figure(3),
+% subplot(211),
+% plot(pulse);title('RRC in time domain');
+% subplot(212),
+% plot(fvec1,20*log10(rrc_f));title('RRC in frequency domain');
+% xlabel('Frequency in Hz');
+% ylabel('Power in dB');
 
 % Each symbol replaced by the pulse shape and added
 pulse_train = conv(pulse,xu);  
@@ -59,32 +60,32 @@ pulse_train_passband = realpulse-imagpulse;
 %pulse_train_passband = realpulse+1i.*imagpulse;
 %pulse_train_passband = pulse_train_passband.*exp(1i*2*pi*fc/fsamp.*n);
 
-figure(5)
-subplot(3,1,1); 
-plot(Tsamp*(0:(length(pulse_train)-1)), real(pulse_train), 'b');
-title('real');
-xlabel('seconds');
-subplot(3,1,2); 
-plot(Tsamp*(0:(length(pulse_train)-1)), imag(pulse_train), 'b');
-title('imag');
-xlabel('seconds');
-subplot(3,1,3); 
-plot(Tsamp*(0:(length(pulse_train)-1)), pulse_train, 'b');
-title('baseband signal');
-xlabel('seconds');
-figure(6)
-subplot(3,1,1); 
-plot(Tsamp*(0:(length(pulse_train_passband)-1)), real(pulse_train_passband), 'b');
-title('real');
-xlabel('seconds');
-subplot(3,1,2); 
-plot(Tsamp*(0:(length(pulse_train_passband)-1)), imag(pulse_train_passband), 'b');
-title('imag');
-xlabel('seconds');
-subplot(3,1,3); 
-plot(Tsamp*(0:(length(pulse_train_passband)-1)), pulse_train_passband, 'b');
-title('passband signal');
-xlabel('seconds');
+% figure(5)
+% subplot(3,1,1); 
+% plot(Tsamp*(0:(length(pulse_train)-1)), real(pulse_train), 'b');
+% title('real');
+% xlabel('seconds');
+% subplot(3,1,2); 
+% plot(Tsamp*(0:(length(pulse_train)-1)), imag(pulse_train), 'b');
+% title('imag');
+% xlabel('seconds');
+% subplot(3,1,3); 
+% plot(Tsamp*(0:(length(pulse_train)-1)), pulse_train, 'b');
+% title('baseband signal');
+% xlabel('seconds');
+% figure(6)
+% subplot(3,1,1); 
+% plot(Tsamp*(0:(length(pulse_train_passband)-1)), real(pulse_train_passband), 'b');
+% title('real');
+% xlabel('seconds');
+% subplot(3,1,2); 
+% plot(Tsamp*(0:(length(pulse_train_passband)-1)), imag(pulse_train_passband), 'b');
+% title('imag');
+% xlabel('seconds');
+% subplot(3,1,3); 
+% plot(Tsamp*(0:(length(pulse_train_passband)-1)), pulse_train_passband, 'b');
+% title('passband signal');
+% xlabel('seconds');
 % compute DFT and scale frequency axes to represent analog frequencies
 N = max(1024,length(real(pulse_train_passband))); 
 P1 = fftshift(fft(pulse_train_passband,N));
