@@ -1,6 +1,6 @@
 function transmitter(packet,fc)
 %%%%%%%%%choose parameters%%%%%%%%%%%%%%
-x=packet;
+x=packet
 N=length(x);                            %length of data
 %%%%%%%%%choose parameters%%%%%%%%%%%%%%
 rb = 440;                                % bit rate [bit/sec]

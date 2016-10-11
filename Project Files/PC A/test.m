@@ -1,5 +1,7 @@
 %clc;clear all;close all;
-Chat_PC_A_Tx;                          
+%Chat_PC_A_Tx;       
+data_bin = [1 0 0 1 1 0 1 0 1 1 1 0 0 1 1 1 0 1 0 1 1 1 0 1 0 1 0 0 0 1 1 1 0 0 1 1 0 1 0 1 1 1 1 0 1 1 0 0 1 0 1 0 1 0 0 0 1 1 0 1 0 1 0 1 1 1 0 1 0 1 0 0 0 0 1 1 1 0 1 0 1 1 1 0 1 0 0 1 1 0 1 0 1 0 1 0];
+
 x=data_bin; 
 N=length(x);                            %length of data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -84,7 +86,7 @@ plot(fvec,20*log10(abs(P1)));
 xlabel('Frequency in Hz')
 ylabel('Power in dB')
 % axis([2000 3000 -100 100]);
-soundsc(real(pulse_train_passband),fsamp);
+%soundsc(real(pulse_train_passband),fsamp);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%reciver%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -174,5 +176,5 @@ bit_vector = demapping(complexValues)';
 
 figure(23)
 scatterplot(x_hat); grid on;
-[numErrors, ber] = biterr(data_bin, bit_vector)
+[numErrors, ber] = biterr(bit_vector, data_bin')
 

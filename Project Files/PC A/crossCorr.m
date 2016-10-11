@@ -8,6 +8,7 @@ function [V,C] = crossCorr(x, y)
 %         end;    
 %     end;
     c=conv(real(x),real(y));
+    plot(c)
     [V,C] = max(c);
 end
 
