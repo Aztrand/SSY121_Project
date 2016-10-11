@@ -1,7 +1,16 @@
 function transmitter(packet,fc)
 %%%%%%%%%choose parameters%%%%%%%%%%%%%%
 x=packet;
-N=length(x);                            %length of data
+N=length(x); %length of data
+
+% Make sure x is 432 bits, if too short, zeropad, if too long, cut
+if N<432
+    x = [x' zeros(1,432-N)];
+elseif N>432
+    x = x(1:432)';
+end
+
+
 %%%%%%%%%choose parameters%%%%%%%%%%%%%%
 rb = 440;                                % bit rate [bit/sec]
 fsamp = 44e3;                            %sample rate
@@ -14,7 +23,7 @@ fsfd = fsamp/fsymb;                    % Number of samples per symbol (choose fs
 s_dect=[1,0,0,1 1,0,0,1 1,0,0,1 1,0,0,1 1,0,0,1 0,0,1,1 0,0,1,1 1,0,0,1 1,0,0,1 0,0,1,1 1,0,0,1 0,0,1,1 1,0,0,1];  %%%the signal used to detection.
 xv=[];
 extr=zeros(1,32);
-xv=[s_dect,extr,x'];
+xv=[s_dect,extr,x];
 %%%QAM
 [x_qam,s] = QAM16(xv,M);
 % figure(1),
