@@ -13,7 +13,8 @@ fsfd = fsamp/fsymb;                    % Number of samples per symbol (choose fs
 %%%%%% frame synchronazation
 s_dect=[1,0,0,1 1,0,0,1 1,0,0,1 1,0,0,1 1,0,0,1 0,0,1,1 0,0,1,1 1,0,0,1 1,0,0,1 0,0,1,1 1,0,0,1 0,0,1,1 1,0,0,1];  %%%the signal used to detection.
 xv=[];
-xv=[s_dect,x'];
+extr=zeros(1,32);
+xv=[s_dect,extr,x'];
 %%%QAM
 [x_qam,s] = QAM16(xv,M);
 % figure(1),
