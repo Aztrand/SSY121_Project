@@ -5,7 +5,7 @@ corrLength=length(x)+length(y)-1;
 
 
 
-c=fftshift(ifft(fft(x,corrLength).*conj(fft(y,corrLength))'));
+c=fftshift(ifft(fft(real(x),corrLength).*conj(fft(real(y),corrLength))'));
 [v,C] = max(c);
 V=real(v);
 figure()

@@ -1,5 +1,4 @@
-x=[1 0 0 1 1 0 1 0 1 1 1 0 0 1 1 1 0 1 0 1 1 1 0 1 0 1 0 0 0 1 1 1 0 0 1 1 0 1 0 1 1 1 1 0 1 1 0 0 1 0 1 0 1 0 0 0 1 1 0 1 0 1 0 1 1 1 0 1 0 1 0 0 0 0 1 1 1 0 1 0 1 1 1 0 1 0 0 1 1 0 1 0 1 0 1 0];
-
+%x=[1 0 0 1 1 0 1 0 1 1 1 0 0 1 1 1 0 1 0 1 1 1 0 1 0 1 0 0 0 1 1 1 0 0 1 1 0 1 0 1 1 1 1 0 1 1 0 0 1 0 1 0 1 0 0 0 1 1 0 1 0 1 0 1 1 1 0 1 0 1 0 0 0 0 1 1 1 0 1 0 1 1 1 0 1 0 0 1 1 0 1 0 1 0 1 0];
 audioAcc=[];
 %%%%%%%%%choose parameters%%%%%%%%%%%%%%
 N=length(x);                            %length of data
@@ -89,7 +88,7 @@ title('passband signal');
 xlabel('seconds');
 figure()
 plot(pulse_train_passband);
-audioArray = awgn(pulse_train_passband,10);
+audioArray = awgn(pulse_train_passband,-10);
 figure()
 plot(audioArray);
 
@@ -127,9 +126,9 @@ const = mf_signal_rz(1:fsfd:end);
 %hold on
 %plot(imag(const))
 
-[r,lag] = xcorr(real(pre_ref), real(const));
+r = xcorr(real(pre_ref), real(const));
 figure();
-plot(lag,r);
+plot(r);
 [V,C] = crossCorr2(pre_ref, const);
 
 const1 = const(8: length(const));
