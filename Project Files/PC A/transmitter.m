@@ -5,14 +5,13 @@ N=length(x);                            %length of data
 %%%%%%%%%choose parameters%%%%%%%%%%%%%%
 rb = 440;                                % bit rate [bit/sec]
 fsamp = 44e3;                            %sample rate
-fc= 2500;
 Tsamp = 1/fsamp;                           % Number of bits per symbol
 M = 16;
 m = log2(M);                        % Number of bits per symbol
 fsymb = rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                    % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
 %%%%%% frame synchronazation
-s_dect=[1,1,0,1,1,1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1,0,1,0,1];  %%%the signal used to detection.
+s_dect=[1,0,0,1,1,0,0,1,1,0,0,1,0,0,1,1,0,0,1,1,1,0,0,1,0,0,1,1];  %%%the signal used to detection.
 s=zeros(1,432);
 j=28;               %%the number of bits that were used to detect.
 for i=1:N
