@@ -13,7 +13,7 @@ m = log2(M);                        % Number of bits per symbol
 fsymb = rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                    % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
 %%%%%% frame synchronazation
-s_dect=[1,0,0,1,1,0,0,1,1,0,0,1,0,0,1,1,0,0,1,1,1,0,0,1,0,0,1,1];  %%%the signal used to detection.
+s_dect=[1,0,0,1 1,0,0,1 1,0,0,1 1,0,0,1 1,0,0,1 0,0,1,1 0,0,1,1 1,0,0,1 1,0,0,1 0,0,1,1 1,0,0,1 0,0,1,1 1,0,0,1];  %%%the signal used to detection.
 sos = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0,s_dect, x,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 % s=zeros(1,432);
 % j=28;               %%the number of bits that were used to detect.
@@ -94,7 +94,7 @@ figure()
 plot(audioArray);
 
 %Create reference preamble
-pre_ref = [3+1i, 3+1i, 3+1i, -3+1i, -3+1i, 3+1i, -3+1i];
+pre_ref = [3, 3, 3, 3, 3, -3, -3, 3, 3, -3, 3, -3, 3];
 xu = zeros(length(pre_ref)*floor(fsfd),1);
 xu(1:fsfd:end) = pre_ref; 
 
@@ -127,8 +127,9 @@ const = mf_signal_rz(1:fsfd:end);
 %hold on
 %plot(imag(const))
 
-[r,lag] = xcorr(real(pre_ref), real(const));
-figure();
+[r,lag] = xcorr(real(const), real(consttest));
+%[r,lag] = xcorr(real(xu), real(mf_signal));
+figure(10);
 plot(lag,r);
 [V, ind] = max(r);
 delay = lag(ind);

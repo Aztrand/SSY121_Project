@@ -15,16 +15,17 @@ audioAcc = [];
 
 %Create reference preamble
 pre_ref = [3, 3, 3, -3, -3, 3, -3];
-
+xu = zeros(length(pre_ref)*floor(fsfd),1);
+xu(1:fsfd:end) = pre_ref; 
 
 %Record Audio
 tic;
-%while toc < tout
+while toc < tout
 %counter = counter + 1
 %if (counter == 10)
  %   audioArray = xu;
 %else
-audioArray = recordAudio(2, fsamp);
+audioArray = recordAudio(1, fsamp);
 %end
 
 audioAcc = cat(1,audioAcc,audioArray);
@@ -39,7 +40,7 @@ bb_signal = pbTObb(audioAcc, fc, Tsamp);
 %
 
 %Low-pass filter
-lpf_signal = lowpassfilter(200,0.2,20,bb_signal);
+lpf_signal = lpf(bb_signal);
 %
 
 %Matched Filter
@@ -54,10 +55,13 @@ mf_signal = mf(pulse, lpf_signal, fsfd);
 mf_signal_rz = mf_signal(2*span*fsfd:end-2*span*fsfd);
 %sample to get symbols
 const = mf_signal_rz(1:fsfd:end);
-
-[r,lag] = xcorr(pre_ref, real(const));
-figure();
-plot(lag,r);
+figure(2)
+hold on;
+plot(real(const));
+[r,lag] = xcorr(pre_ref, real(mf_signal));
+%figure(1);
+%hold on;
+%plot(lag,r);
 [V, ind] = max(r);
 delay = lag(ind);
 V
@@ -82,7 +86,8 @@ end;
 %[numErrors, ber] = biterr(data_bin, bit_vector')
 
 %PSD
-F = fft(mf_signal_rz)
+figure()
+F = fft(mf_signal_rz);
 F=F(1:length(mf_signal_rz)/2+1);
 psd=(1/(2*pi*length(mf_signal_rz)))*abs(F).^2;
 psd(2:end-1) = 2*psd(2:end-1);

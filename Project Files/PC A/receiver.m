@@ -14,7 +14,7 @@ counter = 0;
 audioAcc = [];
 
 %Create reference preamble
-pre_ref = [3, 3, 3, -3, -3, 3, -3];
+pre_ref = [3, 3, 3, 3, 3, -3, -3, 3, 3, -3, 3, -3, 3];
 xu = zeros(length(pre_ref)*floor(fsfd),1);
 xu(1:fsfd:end) = pre_ref; 
 
@@ -50,15 +50,22 @@ a=0.3;                                  % Roll off factor
 mf_signal = mf(pulse, lpf_signal, fsfd);
 %
 
+
 %pre_ref_sig = conv(pulse,xu); 
 %remove zeros
 mf_signal_rz = mf_signal(2*span*fsfd:end-2*span*fsfd);
 %sample to get symbols
 const = mf_signal_rz(1:fsfd:end);
-figure(2)
-hold on;
-plot(real(const));
-[r,lag] = xcorr(pre_ref, real(mf_signal));
+% figure(5)
+% subplot(3,1,1); 
+% plot(Tsamp*(0:(length(const)-1)), real(const), 'b');
+% title('real');
+% xlabel('seconds');
+% subplot(3,1,2); 
+% plot(Tsamp*(0:(length(const)-1)), imag(const), 'b');
+% title('imag');
+% xlabel('seconds');
+[r,lag] = xcorr(xu, real(mf_signal));
 figure(1);
 hold on;
 plot(lag,r);
