@@ -1,6 +1,6 @@
 function transmitter(packet,fc)
 %%%%%%%%%choose parameters%%%%%%%%%%%%%%
-x=packet
+x=packet;
 N=length(x);                            %length of data
 %%%%%%%%%choose parameters%%%%%%%%%%%%%%
 rb = 440;                                % bit rate [bit/sec]
@@ -12,18 +12,10 @@ fsymb = rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                    % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
 %%%%%% frame synchronazation
 s_dect=[1,0,0,1,1,0,0,1,1,0,0,1,0,0,1,1,0,0,1,1,1,0,0,1,0,0,1,1];  %%%the signal used to detection.
-s=zeros(1,432);
-j=28;               %%the number of bits that were used to detect.
-for i=1:N
-    s(i+j+4)=x(i);
-end
-
-for i=1:j
-    s(i)=s_dect(i);
-end
-x=s;
+xv=[];
+xv=[s_dect,x'];
 %%%QAM
-[x_qam,s] = QAM16(x,M);
+[x_qam,s] = QAM16(xv,M);
 % figure(1),
 % scatterplot(s); grid on;                            % Constellation visualization
 % figure(2),
