@@ -13,8 +13,8 @@ m = log2(M);                        % Number of bits per symbol
 fsymb = rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                    % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
 %%%%%% frame synchronazation
-s_dect=[1,1,0,1,1,1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1,0,1,0,1];  %%%the signal used to detection.
-sos = [s_dect, x];
+s_dect=[1,0,0,1,1,0,0,1,1,0,0,1,0,0,1,1,0,0,1,1,1,0,0,1,0,0,1,1];  %%%the signal used to detection.
+sos = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0,s_dect, x];
 % s=zeros(1,432);
 % j=28;               %%the number of bits that were used to detect.
 % for i=1:N
@@ -94,7 +94,7 @@ figure()
 plot(audioArray);
 
 %Create reference preamble
-pre_ref = [1+1i, 1+1i, 1+1i, -1+1i, -1+1i, 1+1i, -1+1i];
+pre_ref = [3+1i, 3+1i, 3+1i, -3+1i, -3+1i, 3+1i, -3+1i];
 xu = zeros(length(pre_ref)*floor(fsfd),1);
 xu(1:fsfd:end) = pre_ref; 
 
