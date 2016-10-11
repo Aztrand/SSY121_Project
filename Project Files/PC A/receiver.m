@@ -14,7 +14,7 @@ counter = 0;
 audioAcc = [];
 
 %Create reference preamble
-pre_ref = [1+1i, 1+1i, 1+1i, -1+1i, -1+1i, 1+1i, -1+1i];
+pre_ref = [3, 3, 3, -3, -3, 3, -3];
 xu = zeros(length(pre_ref)*floor(fsfd),1);
 xu(1:fsfd:end) = pre_ref; 
 
@@ -25,7 +25,7 @@ while toc < tout
 %if (counter == 10)
  %   audioArray = xu;
 %else
-audioArray = recordAudio(0.2, fsamp);
+audioArray = recordAudio(1, fsamp);
 %end
 
 audioAcc = cat(1,audioAcc,audioArray);
@@ -40,7 +40,7 @@ bb_signal = pbTObb(audioAcc, fc, Tsamp);
 %
 
 %Low-pass filter
-lpf_signal = lowpassfilter(200,0.2,20,bb_signal);
+lpf_signal = lpf(bb_signal);
 %
 
 %Matched Filter
@@ -55,36 +55,39 @@ mf_signal = mf(pulse, lpf_signal, fsfd);
 mf_signal_rz = mf_signal(2*span*fsfd:end-2*span*fsfd);
 %sample to get symbols
 const = mf_signal_rz(1:fsfd:end);
-
-[V,C] = crossCorr(pre_ref, const);
+figure(2)
+hold on;
+plot(real(const));
+[r,lag] = xcorr(pre_ref, real(mf_signal));
+figure(1);
+hold on;
+plot(lag,r);
+[V, ind] = max(r);
+delay = lag(ind);
 V
-if (V > 5)  %If the receved signal reaches a certain value of detection
+%[V,C] = crossCorr(pre_ref, const);
+if (V > 0.5)  %If the receved signal reaches a certain value of detection
     count = count+1;    %we wait and record. (Recorder still active)
 end
 if ( count > 6)
-    size(mf_signal)
-    mf_signal = mf_signal';
-    mf_signal = mf_signal(C: C+7854);   %fetching the whole message.
-    %Downsampling
 
-    %remove zeros
-    mf_signal_rz = mf_signal(2*span*fsfd:end-2*span*fsfd);
-    %sample to get symbols
-    const = mf_signal_rz(1:fsfd:end);
-
+    
     %ML decoding
+    const = const(8-delay: 108+(8-delay)-1);
     complexValues = closest(const);
     bit_vector = demapping(complexValues)';
     count = 0;
     audioAcc = [];
+    tout = 0;
 end;
 end;
-figure(23)
-scatterplot(const); grid on;
-[numErrors, ber] = biterr(data_bin, bit_vector)
+%figure(23)
+%scatterplot(const); grid on;
+%[numErrors, ber] = biterr(data_bin, bit_vector')
 
 %PSD
-F = fft(mf_signal_rz)
+figure()
+F = fft(mf_signal_rz);
 F=F(1:length(mf_signal_rz)/2+1);
 psd=(1/(2*pi*length(mf_signal_rz)))*abs(F).^2;
 psd(2:end-1) = 2*psd(2:end-1);

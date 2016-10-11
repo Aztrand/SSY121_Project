@@ -1,4 +1,4 @@
-x=[1 0 0 1 1 0 1 0 1 1 1 0 0 1 1 1 0 1 0 1 1 1 0 1 0 1 0 0 0 1 1 1 0 0 1 1 0 1 0 1 1 1 1 0 1 1 0 0 1 0 1 0 1 0 0 0 1 1 0 1 0 1 0 1 1 1 0 1 0 1 0 0 0 0 1 1 1 0 1 0 1 1 1 0 1 0 0 1 1 0 1 0 1 0 1 0];
+x=[1 1 1 1 1 0 1 1 0 0 1 1 1 0 0 1 1 0 1 0 1 1 1 0 0 1 1 1 0 1 0 1 1 1 0 1 0 1 0 0 0 1 1 1 0 0 1 1 0 1 0 1 1 1 1 0 1 1 0 0 1 0 1 0 1 0 0 0 1 1 0 1 0 1 0 1 1 1 0 1 0 1 0 0 0 0 1 1 1 0 1 0 1 1 1 0 1 0 0 1 1 0 1 0 1 0 1 0];
 
 audioAcc=[];
 %%%%%%%%%choose parameters%%%%%%%%%%%%%%
@@ -14,7 +14,7 @@ fsymb = rb/m;                          % Symbol rate [symb/s]
 fsfd = fsamp/fsymb;                    % Number of samples per symbol (choose fs such that fsfd is an integer for simplicity) [samples/symb]
 %%%%%% frame synchronazation
 s_dect=[1,0,0,1,1,0,0,1,1,0,0,1,0,0,1,1,0,0,1,1,1,0,0,1,0,0,1,1];  %%%the signal used to detection.
-sos = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0,s_dect, x];
+sos = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0,s_dect, x,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 % s=zeros(1,432);
 % j=28;               %%the number of bits that were used to detect.
 % for i=1:N
@@ -130,9 +130,11 @@ const = mf_signal_rz(1:fsfd:end);
 [r,lag] = xcorr(real(pre_ref), real(const));
 figure();
 plot(lag,r);
-[V,C] = crossCorr2(pre_ref, const);
+[V, ind] = max(r);
+delay = lag(ind);
+%[V,C] = crossCorr2(pre_ref, const);
 
-const1 = const(8: length(const));
+const1 = const(8-delay: length(x)/4+(8-delay)-1);
 complexValues = closest(const1);
 %check = cat(2,complexValues(1:length(x_qam))',x_qam');
 bit_vector = demapping(complexValues)';
