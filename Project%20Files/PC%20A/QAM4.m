@@ -1,9 +1,9 @@
 function [x_qam,s]=QAM4(x,M)
-fsamp = 44e3; % sampling frequency [Hz]
+fsamp = 8e3; % sampling frequency [Hz]
 Tsamp = 1/fsamp;    % Sampling time
-rb = 440; % bit rate [bit/sec]
+rb = 400; % bit rate [bit/sec]
 % Constellation or bit to symbol mapping
-s = [(1 + 1i) (1 - 1i) (-1 -1i) (-1 + 1i)]/sqrt(2); % Constellation 1 - QPSK/4-QAM
+s = [(1 + 1i) (1 - 1i) (-1 -1i) (-1 + 1i)]%/sqrt(2); % Constellation 1 - QPSK/4-QAM
 
 M = length(s);                                      % Number of symbols in the constellation
 m = log2(M);                                        % Number of bits per symbol
