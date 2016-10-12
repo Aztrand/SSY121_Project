@@ -2,7 +2,7 @@ function [ filtered_signal ] = lpf( y1 )
 %LPF Summary of this function goes here
 %   Detailed explanation goes here
 fs = 1000;
-Wp = 37*2/fs;
+Wp = 36*2/fs;
 Wr = 40*2/fs;
 Ap = 1;
 Ar = 5;
