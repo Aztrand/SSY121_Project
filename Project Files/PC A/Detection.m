@@ -14,7 +14,7 @@ while(detect~=1)
     crosscorrthreshold = ;
     if (r>crosscorrthreshold)
         detect = 1;
-        N2 = 13*fsfd+432/2*fsfd+length(guard);
+        N2 = (13+1)*fsfd+432/2*fsfd+length(guard);
         signal = wavrecord(N2,fs); %N should be guard+signal
     end
     sound_old = sound_in;
