@@ -12,10 +12,12 @@ while(detect~=1)
     
     [r,lag] = xcorr(lpf_sound,ref_barker);
     crosscorrthreshold = ;
-    if (r>crosscorrthreshold)
-        detect = 1;
-        N2 = (13+1)*fsfd+432/2*fsfd+length(guard);
-        signal = wavrecord(N2,fs); %N should be guard+signal
+    for i = 1:length(r)
+        if (r(i)>crosscorrthreshold)
+            detect = 1;
+            N2 = (13+1)*fsfd+432/2*fsfd+length(guard);
+            signal = wavrecord(N2,fs); %N should be guard+signal
+        end
     end
     sound_old = sound_in;
 end
