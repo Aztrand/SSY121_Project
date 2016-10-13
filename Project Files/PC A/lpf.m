@@ -12,7 +12,7 @@ Ar = 5;
 [H,w] = freqz(b,a,512);
 %figure(),plot(w*fs/(2*pi),abs(H));
 %使用FFT得到滤波后信号的频谱
-filtered_signal = filter(b,a,y1);
+filtered_signal = filfilt(b,a,y1);
 
 end
 
