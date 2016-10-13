@@ -2,7 +2,7 @@ function [ s ] = demapping4( values )
 %DEMAPPING Summary of this function goes here
 %   Detailed explanation goes here
 
-const=([3 0 ; 1 2]);
+const=([3 1 ; 2 0]);
 
 s=[];
 for i=1:length(values)
